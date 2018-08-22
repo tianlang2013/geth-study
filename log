@@ -1,0 +1,91 @@
+package log
+
+import "testing"
+
+//日志按级别输出
+
+/**
+
+可以按照日志级别输出日志===================================== 
+
+    LvlCrit Lvl = iota
+
+    LvlError
+
+    LvlWarn
+
+    LvlInfo
+
+    LvlDebug
+
+    LvlTrace
+
+小于或者等于指定级别的日志可以输出
+
+*/
+
+func TestLvl(t *testing.T)  {
+
+    log := New("log","test/w")
+
+    log.SetHandler(LvlFilterHandler(LvlInfo, StderrHandler))
+
+    log.Info("info")
+
+    log.Debug("debug")
+
+}
+
+
+
+结果可以看到，只输出了info级别的数据
+
+
+//日志输出到文件，会在当前文件夹下产生一个日志文件================================ 
+
+func TestFile(t *testing.T){
+
+log := New("file","log/test")
+
+handler, err := FileHandler("./f.log",  LogfmtFormat())
+
+if err != nil {
+
+log.Error(err.Error())
+
+}
+
+    log.SetHandler(handler)
+
+    log.Info("file log test")
+
+}
+
+
+
+
+
+//日志输出到远方日志服务器端口==================================== 
+
+func TestNet(t *testing.T){
+
+    log := New("net","net/test")
+
+    netHandler ,_:= NetHandler("tcp","127.0.0.1:8081" , LogfmtFormat())
+
+    log.SetHandler(netHandler)
+
+    log.Info("net info log test")
+
+    log.Warn("net warn log test")
+
+    log.Error("net error log test")
+
+}
+
+### 结果 
+```
+t=2018-08-22T16:35:34+0800 lvl=info msg="net info log test" net=net/test
+t=2018-08-22T16:35:34+0800 lvl=warn msg="net warn log test" net=net/test
+t=2018-08-22T16:35:34+0800 lvl=eror msg="net error log test" net=net/test
+```
