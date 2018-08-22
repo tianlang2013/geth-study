@@ -36,6 +36,13 @@ func TestLvl(t *testing.T)  {
 
 }
 
+结果 
+```
+=== RUN   TestLvl
+t=2018-08-22T16:36:54+0800 lvl=info msg=info log=test/w
+--- PASS: TestLvl (0.00s)
+PASS
+```
 
 
 结果可以看到，只输出了info级别的数据
